@@ -19,21 +19,22 @@ class Echo(object):
         self.stop = False
 
     def wakeup(self, direction=0):
-        position = int((direction + 15) / (360 / self.pixels_number)) % self.pixels_number
+        position = int((direction + 15) /
+                       (360 / self.pixels_number)) % self.pixels_number
 
-        pixels = [0, 0, 0, self.brightness] * self.pixels_number
-        pixels[position * 4 + 2] = self.brightness
+        pixels = [0, 255, 63, 0] * self.pixels_number
+        pixels[position * 4 + 2] = 132
 
         self.show(pixels)
 
     def listen(self):
-        pixels = [0, 0, 0, self.brightness] * self.pixels_number
+        pixels = [0, 255, 63, 0] * self.pixels_number
 
         self.show(pixels)
 
     def think(self):
         half_brightness = int(self.brightness / 2)
-        pixels  = [0, 0, half_brightness, half_brightness, 0, 0, 0, self.brightness] * self.pixels_number
+        pixels = [0, 255, 63, 0, 0, 255, 132, 0] * self.pixels_number
 
         while not self.stop:
             self.show(pixels)
@@ -41,23 +42,24 @@ class Echo(object):
             pixels = pixels[-4:] + pixels[:-4]
 
     def speak(self):
-        step = int(self.brightness / 12)
-        position = int(self.brightness / 2)
+        step = int(16)
+        position = int(105)
         while not self.stop:
-            pixels  = [0, 0, position, self.brightness - position] * self.pixels_number
+            pixels = [0, 255, 210 - position, 0] * self.pixels_number
             self.show(pixels)
             time.sleep(0.01)
-            if position <= 0:
-                step = int(self.brightness / 12)
+            if position <= 63:
+                step = 42
                 time.sleep(0.4)
-            elif position >= int(self.brightness / 2):
-                step = - int(self.brightness / 12)
+            elif position >= 105:
+                step = - 42
                 time.sleep(0.4)
 
             position += step
 
     def off(self):
         self.show([0] * 4 * 12)
+
 
 class GoogleHome(object):
     def __init__(self, show):
@@ -80,19 +82,20 @@ class GoogleHome(object):
         position = int((direction + 90 + 15) / 30) % 12
 
         basis = self.basis[position*-4:] + self.basis[:position*-4]
-        
+
         pixels = [v * 25 for v in basis]
         self.show(pixels)
         time.sleep(0.1)
 
-        pixels =  pixels[-4:] + pixels[:-4]
+        pixels = pixels[-4:] + pixels[:-4]
         self.show(pixels)
         time.sleep(0.1)
 
         for i in range(2):
             new_pixels = pixels[-4:] + pixels[:-4]
-            
-            self.show([v/2+pixels[index] for index, v in enumerate(new_pixels)])
+
+            self.show([v/2+pixels[index]
+                      for index, v in enumerate(new_pixels)])
             pixels = new_pixels
             time.sleep(0.1)
 
@@ -141,5 +144,3 @@ class GoogleHome(object):
 
     def off(self):
         self.show([0] * 4 * 12)
-
-
