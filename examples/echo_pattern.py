@@ -6,32 +6,33 @@ pip install pixel_ring gpiozero
 
 import time
 
-from pixel_ring import pixel_ring
 from gpiozero import LED
+from pixel_ring import apa102_pixel_ring as pixel_ring
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     power = LED(5)
     power.on()
 
-    pixel_ring.set_brightness(20)
-    pixel_ring.change_pattern('echo')
+    pixel_ring = pixel_ring.PixelRing('trevor')
+    pixel_ring.set_brightness(7)
+    # pixel_ring.change_pattern('trevor')
     while True:
 
         try:
             pixel_ring.wakeup()
-            time.sleep(3)
+            time.sleep(6)
+            pixel_ring.listen()
+            time.sleep(6)
             pixel_ring.think()
-            time.sleep(3)
+            time.sleep(6)
             pixel_ring.speak()
             time.sleep(6)
             pixel_ring.off()
-            time.sleep(3)
+            time.sleep(6)
         except KeyboardInterrupt:
             break
-
 
     pixel_ring.off()
     power.off()
     time.sleep(1)
-

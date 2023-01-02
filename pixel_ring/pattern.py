@@ -144,3 +144,72 @@ class GoogleHome(object):
 
     def off(self):
         self.show([0] * 4 * 12)
+
+
+class Trevor(object):
+
+    brightness = 24 * 8
+
+    def __init__(self, show):
+        self.pixel_number = 12
+
+        self.pixels = [0] * 4 * self.pixel_number
+
+        if not callable(show):
+            raise ValueError('show parameter is not callable')
+
+        self.show = show
+        self.stop = False
+
+    def wakeup(self, direction=0):
+        position = int((direction + 15) /
+                       (360 / self.pixel_number)) % self.pixel_number
+
+        pixels = [0, 255, 177, 0] * self.pixel_number
+        pixels[position * 4 + 2] = 83 
+        pixels[position * 4 + 3] = 25
+
+        self.show(pixels)
+
+    def listen(self):
+        pixels = [0, 255, 177, 0] * self.pixel_number
+
+        self.show(pixels)
+
+    def think(self):
+        direction = 0
+        green = 83
+        blue = 25
+        position = int((direction + 15) /
+                       (360 / self.pixel_number)) % self.pixel_number
+
+        pixels = [0, 255, 177, 0] * 4 * self.pixel_number
+        pixels[position * 4 + 2] = blue
+        pixels[position * 4 + 3] = green
+
+        while not self.stop:
+            if position == 12:
+                position = 0
+                if green == 83 and blue == 25:
+                    green = 177
+                    blue = 0
+                else:
+                    green = 83
+                    blue = 25
+            self.show(pixels)
+            pixels[position * 4 + 2] = green
+            pixels[position * 4 + 3] = blue
+            position += 1
+            time.sleep(0.020)
+
+    def speak(self):
+        while not self.stop:
+            pixels = [0, 255, 177, 0] * self.pixel_number
+            self.show(pixels)
+            time.sleep(0.5)
+            pixels = [0, 255, 83, 25] * self.pixel_number
+            self.show(pixels)
+            time.sleep(0.5)
+
+    def off(self):
+        self.show([0] * 4 * 12)
