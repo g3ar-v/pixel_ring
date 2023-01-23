@@ -22,5 +22,8 @@ class PixelRing(object):
     def speak(self):
         pass
 
+    def update(self, value):
+        pass
+
     def off(self):
         pass

@@ -1,13 +1,10 @@
 
 import time
 import threading
-try:
-    import queue as Queue
-except ImportError:
-    import Queue as Queue
+import queue as Queue
 
 from pixel_ring.apa102 import APA102
-from .pattern import Echo, GoogleHome, Trevor
+from .pattern import Echo, GoogleHome, Trevor, Status
 
 
 class PixelRing(object):
@@ -18,6 +15,8 @@ class PixelRing(object):
             self.pattern = Echo(show=self.show)
         elif pattern == 'trevor':
             self.pattern = Trevor(show=self.show)
+        elif pattern == 'status':
+            self.pattern = Status(show=self.show)
         else:
             self.pattern = GoogleHome(show=self.show)
 
@@ -41,6 +40,8 @@ class PixelRing(object):
             self.pattern = Echo(show=self.show)
         elif pattern == 'trevor':
             self.pattern = Trevor(show=self.show)
+        elif pattern == 'status':
+            self.pattern = Status(show=self.show)
         else:
             self.pattern = GoogleHome(show=self.show)
 
@@ -79,6 +80,10 @@ class PixelRing(object):
             self.dev.set_pixel(i, int(data[4*i + 1]), int(data[4*i + 2]), int(data[4*i + 3]))
 
         self.dev.show()
+    
+    def update(self, value=0):
+        self.pattern.update(value)
+        
 
     def set_color(self, rgb=None, r=0, g=0, b=0):
         if rgb:
@@ -89,21 +94,21 @@ class PixelRing(object):
         self.dev.show()
 
 
-if __name__ == '__main__':
-    pixel_ring = PixelRing()
-    while True:
-        try:
-            pixel_ring.wakeup()
-            time.sleep(3)
-            pixel_ring.think()
-            time.sleep(3)
-            pixel_ring.speak()
-            time.sleep(6)
-            pixel_ring.off()
-            time.sleep(3)
-        except KeyboardInterrupt:
-            break
+# if __name__ == '__main__':
+#     pixel_ring = PixelRing()
+#     while True:
+#         try:
+#             pixel_ring.wakeup()
+#             time.sleep(3)
+#             pixel_ring.think()
+#             time.sleep(3)
+#             pixel_ring.speak()
+#             time.sleep(6)
+#             pixel_ring.off()
+#             time.sleep(3)
+#         except KeyboardInterrupt:
+#             break
 
 
-    pixel_ring.off()
-    time.sleep(1)
+#     pixel_ring.off()
+#     time.sleep(1)
