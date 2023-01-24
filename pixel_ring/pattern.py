@@ -248,9 +248,13 @@ class Status(object):
 
     def update(self, value):
         """ Update the status of the skill giving a number between 0 and 12"""
-        for position in range(value):
-            self.pixels[position * PIXEL_DOT + 2] = 83
-            self.pixels[position * PIXEL_DOT + 3] = 25
+        if value < 1:
+            self.pixels[0 * PIXEL_DOT + 2] = 83
+            self.pixels[0 * PIXEL_DOT + 3] = 25
+        else:
+            for position in range(value):
+                self.pixels[position * PIXEL_DOT + 2] = 83
+                self.pixels[position * PIXEL_DOT + 3] = 25
         self.show(self.pixels)
 
     def off(self):

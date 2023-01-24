@@ -14,14 +14,22 @@ if __name__ == "__main__":
     power = LED(5)
     power.on()
 
-    pixel_ring = pixel_ring.PixelRing('status')
-    pixel_ring.set_brightness(7)
-    # pixel_ring.change_pattern('trevor')
+    pixel_ring = pixel_ring.PixelRing('echo')
+    pixel_ring.set_brightness(10)
+    # pixel_ring.change_pattern('google')
+    pixel_ring.change_pattern('status')
     while True:
         try:
-            pixel_ring.wakeup()
-            pixel_ring.think()
-            time.sleep(10)
+            # pixel_ring.wakeup()
+            # pixel_ring.listen()
+            # pixel_ring.think()
+            # time.sleep(1)
+            pixel_ring.update(6)
+            time.sleep(3)
+            pixel_ring.update(7)
+            time.sleep(3)
+            pixel_ring.update(8)
+            time.sleep(3)
         except KeyboardInterrupt:
             break
     pixel_ring.off()

@@ -82,7 +82,9 @@ class PixelRing(object):
         self.dev.show()
     
     def update(self, value=0):
-        self.pattern.update(value)
+        def f():
+            self.pattern.update(value)
+        self.queue.put(f)
         
 
     def set_color(self, rgb=None, r=0, g=0, b=0):
@@ -94,21 +96,21 @@ class PixelRing(object):
         self.dev.show()
 
 
-# if __name__ == '__main__':
-#     pixel_ring = PixelRing()
-#     while True:
-#         try:
-#             pixel_ring.wakeup()
-#             time.sleep(3)
-#             pixel_ring.think()
-#             time.sleep(3)
-#             pixel_ring.speak()
-#             time.sleep(6)
-#             pixel_ring.off()
-#             time.sleep(3)
-#         except KeyboardInterrupt:
-#             break
+if __name__ == '__main__':
+    pixel_ring = PixelRing()
+    while True:
+        try:
+            pixel_ring.wakeup()
+            time.sleep(3)
+            pixel_ring.think()
+            time.sleep(3)
+            pixel_ring.speak()
+            time.sleep(6)
+            pixel_ring.off()
+            time.sleep(3)
+        except KeyboardInterrupt:
+            break
 
 
-#     pixel_ring.off()
-#     time.sleep(1)
+    pixel_ring.off()
+    time.sleep(1)
